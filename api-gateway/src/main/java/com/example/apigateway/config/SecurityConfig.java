@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -20,18 +21,27 @@ public class SecurityConfig {
     private String jwtSecret;
 
     @Bean
-    public ReactiveJwtDecoder jwtDecoder() {
+public ReactiveJwtDecoder jwtDecoder() {
 
-        SecretKeySpec secretKey =
-                new SecretKeySpec(
-                        jwtSecret.getBytes(),
-                        "HmacSHA256"
-                );
+    SecretKeySpec secretKey =
+            new SecretKeySpec(
+                    jwtSecret.getBytes(),
+                    "HmacSHA256"
+            );
 
-        return NimbusReactiveJwtDecoder
-                .withSecretKey(secretKey)
-                .build();
-    }
+    NimbusReactiveJwtDecoder decoder =
+            NimbusReactiveJwtDecoder
+                    .withSecretKey(secretKey)
+                    .build();
+
+    decoder.setJwtValidator(
+            JwtValidators.createDefaultWithIssuer(
+                    "auth-service"
+            )
+    );
+
+    return decoder;
+}
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(

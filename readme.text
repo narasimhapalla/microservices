@@ -952,6 +952,19 @@ Understand how to trace one request across multiple microservices.
 Start api-gatewayJWT_SECRET=change-this-to-a-long-random-secret-key-for-learning-only ./mvnw spring-boot:run
 ---
 
+new token - USER
+export TOKEN=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huIiwicm9sZSI6IlVTRVIiLCJleHAiOjE3ODg1MjI4NTQsImlhdCI6MTc4ODUxOTI1NH0.Q_mZkqPahi1w_Gv7oeKdza7mdNQYbEPIx7tC_PiJMas
+
+GUEST Token
+export GTOKEN=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huIiwicm9sZSI6IkdVRVNUIiwiZXhwIjoxNzg4NTE5NjQ5LCJpYXQiOjE3ODg1MTYwNDl9.e_EfJTY5fGjvVFEsj3rsIqqMAjHI49QQ__0E4CONl3Q
+
+ADMIN Token
+export ATOKEN=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzg4NTIyMzE1LCJpYXQiOjE3ODg1MTg3MTV9.jINm9TJepbCya8ieQa7kEnaR_ZAtevndNh_nLpPNa7A
+
+
+java -cp "target/classes:$(find ~/.m2/repository/com/nimbusds/nimbus-jose-jwt/10.7 -name '*.jar' | head -1)" \
+com.example.apigateway.util.JwtTokenGenerator
+
 ## Day 29 — Security and Configuration
 
 ### Spring Profiles
@@ -999,6 +1012,26 @@ API Gateway
    v
 Microservices
 ```
+
+✅ Auth Service
+✅ In-memory user repository
+✅ USER / ADMIN roles
+✅ BCrypt password hashing
+✅ JWT generation
+✅ JWT claims
+   ├── sub
+   ├── role
+   ├── iss
+   ├── iat
+   └── exp
+✅ JWT signature validation
+✅ JWT expiration validation
+✅ JWT issuer validation
+✅ Gateway authorization
+✅ Product Service JWT validation
+✅ Method-level authorization
+✅ @PreAuthorize
+✅ Defense in depth
 
 ---
 
