@@ -33,7 +33,7 @@ public class OrderController {
         String correlationId,
             @Valid @RequestBody OrderRequest request) {
 System.out.println(
-            "Order Service Correlation ID: "
+            "Order Service Correlation ID : "
                     + correlationId
 );
     logger.info("Creating order");

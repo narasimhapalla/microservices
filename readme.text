@@ -1,0 +1,1352 @@
+# Spring Boot + Microservices Learning Journey
+
+## Project Purpose
+
+This project is created to learn and practice **Spring Boot and Microservices architecture** step by step.
+
+The goal is to build a complete microservices-based Order Management system while understanding how different microservices concepts work together.
+
+---
+
+# Project Architecture
+
+```text
+                              CLIENT
+                                |
+                                |
+                                v
+                         API GATEWAY
+                            Port 8080
+                                |
+                                |
+                                v
+                       SERVICE DISCOVERY
+                            EUREKA
+                            Port 8761
+                                |
+                --------------------------------
+                |              |               |
+                v              v               v
+         CUSTOMER SERVICE   ORDER SERVICE   PRODUCT SERVICE
+                |              |               |
+                v              v               v
+          CUSTOMER DB       ORDER DB       PRODUCT DB
+```
+
+---
+
+# Microservices in This Project
+
+```text
+microservices/
+│
+├── service-discovery/
+│
+├── api-gateway/
+│
+├── customer-service/
+│
+├── product-service/
+│
+├── order-service/
+│
+├── .vscode/
+│   └── tasks.json
+│
+└── README.md
+```
+
+---
+
+# Services and Ports
+
+| Service                    | Port | Purpose                            |
+| -------------------------- | ---: | ---------------------------------- |
+| Service Discovery (Eureka) | 8761 | Service registration and discovery |
+| API Gateway                | 8080 | Single entry point for clients     |
+| Customer Service           | 8081 | Customer management                |
+| Order Service              | 8082 | Order management                   |
+| Product Service            | 8083 | Product management                 |
+
+> Port numbers can be changed based on project configuration.
+
+---
+
+# 30-Day Spring Boot + Microservices Learning Plan
+
+---
+
+## WEEK 1 — Spring Boot Fundamentals
+
+### Day 1 — Spring Boot Basics
+
+Learn:
+
+* What is Spring Boot?
+* Spring vs Spring Boot
+* Project structure
+* `@SpringBootApplication`
+* Maven and `pom.xml`
+* Dependencies
+* `application.properties`
+
+Practice:
+
+```text
+Create and run a simple Spring Boot application.
+```
+
+---
+
+### Day 2 — REST APIs
+
+Learn:
+
+* `@RestController`
+* `@RequestMapping`
+* `@GetMapping`
+* `@PostMapping`
+* `@PutMapping`
+* `@DeleteMapping`
+* Path Variables
+* Request Parameters
+
+Practice:
+
+```text
+GET /customers
+GET /customers/{id}
+POST /customers
+```
+
+---
+
+### Day 3 — DTOs
+
+Learn:
+
+* What is a DTO?
+* Request DTO
+* Response DTO
+* Why DTOs are important
+
+Practice:
+
+```text
+CreateCustomerRequest
+CustomerResponse
+
+CreateProductRequest
+ProductResponse
+
+CreateOrderRequest
+OrderResponse
+```
+
+---
+
+### Day 4 — Validation
+
+Learn:
+
+* `@Valid`
+* `@NotNull`
+* `@NotBlank`
+* `@Positive`
+* Validation errors
+
+Example:
+
+```java
+public class CreateOrderRequest {
+
+    @NotNull
+    private Long customerId;
+
+    @NotNull
+    private Long productId;
+
+    @Positive
+    private Integer quantity;
+}
+```
+
+---
+
+### Day 5 — Service Layer Architecture
+
+Learn the standard architecture:
+
+```text
+Controller
+    |
+    v
+Service
+    |
+    v
+Repository
+    |
+    v
+Database
+```
+
+Understand:
+
+* Controller responsibilities
+* Service business logic
+* Repository database access
+
+---
+
+### Day 6 — Spring Data JPA
+
+Learn:
+
+* JPA
+* Hibernate
+* `@Entity`
+* `@Id`
+* `@GeneratedValue`
+* `JpaRepository`
+
+Practice:
+
+```text
+Create Product Entity
+Create Product Repository
+Save Product
+Retrieve Product
+```
+
+---
+
+### Day 7 — Exception Handling
+
+Learn:
+
+* Custom Exceptions
+* `@RestControllerAdvice`
+* `@ExceptionHandler`
+* HTTP Status Codes
+
+Practice:
+
+```text
+CustomerNotFoundException
+ProductNotFoundException
+OrderNotFoundException
+GlobalExceptionHandler
+```
+
+---
+
+# WEEK 2 — Microservices Fundamentals
+
+## Day 8 — Introduction to Microservices
+
+Learn:
+
+* What is a Microservice?
+* Monolith vs Microservices
+* Advantages
+* Disadvantages
+* Challenges
+
+Monolith:
+
+```text
+Frontend
+    |
+    v
+Single Application
+    |
+    v
+Database
+```
+
+Microservices:
+
+```text
+Customer Service
+Product Service
+Order Service
+```
+
+---
+
+## Day 9 — Customer Service
+
+Build:
+
+```text
+customer-service
+```
+
+Implement APIs:
+
+```http
+GET /customers
+
+GET /customers/{id}
+
+POST /customers
+
+PUT /customers/{id}
+
+DELETE /customers/{id}
+```
+
+Add:
+
+```text
+Controller
+Service
+Repository
+Database
+DTO
+Validation
+Exception Handling
+```
+
+---
+
+## Day 10 — Product Service
+
+Build:
+
+```text
+product-service
+```
+
+Implement APIs:
+
+```http
+GET /products
+
+GET /products/{id}
+
+POST /products
+
+PUT /products/{id}
+
+DELETE /products/{id}
+```
+
+Add:
+
+```text
+Product Entity
+Product Repository
+Product Service
+Product Controller
+```
+
+---
+
+## Day 11 — Order Service
+
+Build:
+
+```text
+order-service
+```
+
+Implement:
+
+```http
+POST /orders
+```
+
+Example request:
+
+```json
+{
+  "customerId": 1,
+  "productId": 1,
+  "quantity": 2
+}
+```
+
+Initially, keep Order Service simple.
+
+---
+
+## Day 12 — Service Discovery with Eureka
+
+Learn:
+
+* What is Service Discovery?
+* Why hard-coded URLs should be avoided
+* Eureka Server
+* Eureka Client
+* Service Registration
+* Service Discovery
+
+Architecture:
+
+```text
+Customer Service
+        |
+        | Register
+        v
+      EUREKA
+        ^
+        | Register
+        |
+Order Service
+```
+
+Start:
+
+```text
+service-discovery
+```
+
+Verify services in the Eureka Dashboard.
+
+---
+
+## Day 13 — Understanding Eureka Registration
+
+Learn how a microservice registers with Eureka.
+
+Configuration example:
+
+```properties
+spring.application.name=order-service
+
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+```
+
+Understand the flow:
+
+```text
+Order Service Starts
+        |
+        v
+Eureka Client
+        |
+        | Register
+        v
+Eureka Server
+```
+
+Learn:
+
+* Service Name
+* Service Instance
+* Heartbeats
+* Service Removal
+* What happens when a service goes down
+
+---
+
+## Day 14 — API Gateway
+
+Build:
+
+```text
+api-gateway
+```
+
+Learn:
+
+* API Gateway
+* Routes
+* Predicates
+* Filters
+
+Architecture:
+
+```text
+Client
+   |
+   v
+API Gateway
+   |
+   v
+Microservice
+```
+
+Example:
+
+```text
+http://localhost:8080/customers
+```
+
+Gateway forwards the request to:
+
+```text
+Customer Service
+```
+
+---
+
+# WEEK 3 — Service Communication
+
+## Day 15 — API Gateway + Eureka
+
+Configure:
+
+```text
+API Gateway
+     |
+     | lb://CUSTOMER-SERVICE
+     v
+Eureka
+     |
+     v
+Customer Service
+```
+
+Learn:
+
+* `lb://`
+* Load Balancer
+* Service Discovery
+* Dynamic Routing
+
+Practice routes:
+
+```text
+/customers/**
+/products/**
+/orders/**
+```
+
+---
+
+## Day 16 — Service-to-Service Communication
+
+Learn how microservices communicate.
+
+This project does not use:
+
+```text
+@FeignClient
+```
+
+Focus on:
+
+```text
+RestClient
+```
+
+Understand:
+
+```text
+Order Service
+      |
+      | HTTP Request
+      v
+Customer Service
+```
+
+And:
+
+```text
+Order Service
+      |
+      | HTTP Request
+      v
+Product Service
+```
+
+Learn:
+
+* HTTP communication
+* Request/Response
+* Service names
+* Load Balancing
+* Eureka Discovery
+
+---
+
+## Day 17 — Create Order: Customer Validation
+
+Implement the flow:
+
+```text
+Create Order Request
+        |
+        v
+Order Service
+        |
+        v
+Customer Service
+        |
+        v
+Customer Exists?
+        |
+    Yes / No
+```
+
+Example:
+
+```text
+POST /orders
+
+customerId = 1
+```
+
+Order Service validates whether the customer exists.
+
+---
+
+## Day 18 — Create Order: Product Validation
+
+Implement:
+
+```text
+Order Service
+        |
+        v
+Product Service
+        |
+        v
+Product Exists?
+        |
+        v
+Product Available?
+```
+
+Order Service should validate:
+
+```text
+Product Exists
+Product is Active
+Product is Available
+```
+
+---
+
+## Day 19 — Calculate Order Amount
+
+Implement:
+
+```text
+Product Price
+      |
+      v
+Quantity
+      |
+      v
+Calculate Total
+```
+
+Example:
+
+```text
+Product Price = 1850
+
+Quantity = 2
+
+Total = 3700
+```
+
+---
+
+## Day 20 — Save Order
+
+Complete the Order creation flow:
+
+```text
+Client
+   |
+   v
+API Gateway
+   |
+   v
+Order Service
+   |
+   +--------------------+
+   |                    |
+   v                    v
+Customer Service    Product Service
+   |                    |
+   +---------+----------+
+             |
+             v
+      Validate Order
+             |
+             v
+      Calculate Amount
+             |
+             v
+        Save Order
+             |
+             v
+        Order Database
+```
+
+---
+
+## Day 21 — Complete Request Flow
+
+Understand the complete request lifecycle:
+
+```text
+CLIENT
+
+POST /orders
+       |
+       v
+
+API GATEWAY :8080
+       |
+       v
+
+EUREKA DISCOVERY
+       |
+       v
+
+ORDER SERVICE
+       |
+       +------------------+
+       |                  |
+       v                  v
+CUSTOMER SERVICE     PRODUCT SERVICE
+       |                  |
+       v                  v
+ CUSTOMER DB          PRODUCT DB
+       |                  |
+       +--------+---------+
+                |
+                v
+
+          ORDER SERVICE
+                |
+                v
+
+           ORDER DATABASE
+                |
+                v
+
+           API RESPONSE
+                |
+                v
+
+              CLIENT
+```
+
+Practice debugging every step.
+
+---
+
+# WEEK 4 — Resilience Patterns
+
+## Day 22 — Timeout
+
+Learn:
+
+* What is a timeout?
+* Why timeouts are important
+* Connection timeout
+* Read timeout
+
+Scenario:
+
+```text
+Order Service
+      |
+      v
+Product Service
+      |
+      X
+   Slow Response
+      |
+      v
+   Timeout
+```
+
+---
+
+## Day 23 — Circuit Breaker
+
+Learn:
+
+* What is a Circuit Breaker?
+* Cascading failures
+* Resilience4j
+
+Circuit states:
+
+```text
+CLOSED
+   |
+   | Failures
+   v
+OPEN
+   |
+   | Wait
+   v
+HALF_OPEN
+   |
+   | Success
+   v
+CLOSED
+```
+
+Practice:
+
+```text
+Stop Product Service
+
+Send Create Order Request
+
+Observe Circuit Breaker behavior
+```
+
+---
+
+## Day 24 — Fallback
+
+Implement fallback handling.
+
+Scenario:
+
+```text
+Order Service
+      |
+      v
+Product Service
+      |
+      X
+    DOWN
+      |
+      v
+Circuit Breaker
+      |
+      v
+Fallback Response
+```
+
+Example:
+
+```json
+{
+  "status": "FAILED",
+  "message": "Product Service is currently unavailable"
+}
+```
+
+---
+
+## Day 25 — Retry
+
+Learn:
+
+* Retry Pattern
+* Retry Configuration
+* Retry Attempts
+* Retry Delay
+
+Flow:
+
+```text
+Request
+   |
+   X Failure
+   |
+Retry 1
+   |
+Retry 2
+   |
+Retry 3
+```
+
+Practice with Resilience4j.
+
+---
+
+## Day 26 — Bulkhead
+
+Learn:
+
+* Bulkhead Pattern
+* Resource Isolation
+* Thread Isolation
+* Preventing system overload
+
+Concept:
+
+```text
+Order Requests
+       |
+       v
+    BULKHEAD
+       |
+   +---+---+
+   |       |
+   v       v
+Allowed  Rejected
+```
+
+---
+
+# WEEK 5 — Production-Level Microservices
+
+## Day 27 — Spring Boot Actuator
+
+Learn:
+
+* Application Health
+* Metrics
+* Monitoring
+
+Endpoints:
+
+```text
+/actuator/health
+
+/actuator/info
+
+/actuator/metrics
+```
+
+Practice:
+
+```text
+Check health of:
+
+Eureka
+API Gateway
+Customer Service
+Product Service
+Order Service
+```
+
+---
+
+## Day 28 — Logging and Distributed Tracing
+
+Learn:
+
+* SLF4J
+* Logback
+* Log Levels
+* Structured Logging
+* Correlation IDs
+* Trace IDs
+
+Example:
+
+```text
+Request ID: ABC123
+
+API Gateway
+      |
+      | ABC123
+      v
+
+Order Service
+      |
+      | ABC123
+      v
+
+Product Service
+```
+
+Understand how to trace one request across multiple microservices.
+
+Start api-gatewayJWT_SECRET=change-this-to-a-long-random-secret-key-for-learning-only ./mvnw spring-boot:run
+---
+
+## Day 29 — Security and Configuration
+
+### Spring Profiles
+
+Learn:
+
+```text
+application-dev.properties
+
+application-test.properties
+
+application-prod.properties
+```
+
+### Environment Variables
+
+Learn how to externalize:
+
+```text
+Database URL
+Database Username
+Database Password
+Eureka URL
+JWT Secret
+```
+
+### Spring Security Basics
+
+Learn:
+
+* Authentication
+* Authorization
+* JWT
+* Securing APIs
+
+Architecture:
+
+```text
+Client
+   |
+   | JWT Token
+   v
+API Gateway
+   |
+   v
+Microservices
+```
+
+---
+
+## Day 30 — Docker, Testing and Final Review
+
+### Docker
+
+Learn:
+
+* Docker Image
+* Docker Container
+* Dockerfile
+
+Dockerize:
+
+```text
+service-discovery
+api-gateway
+customer-service
+product-service
+order-service
+```
+
+### Docker Compose
+
+Run all services together:
+
+```text
+Docker Compose
+      |
+      +--- Eureka
+      |
+      +--- API Gateway
+      |
+      +--- Customer Service
+      |
+      +--- Product Service
+      |
+      +--- Order Service
+```
+
+### Testing
+
+Learn:
+
+```text
+JUnit
+Mockito
+Unit Testing
+Integration Testing
+```
+
+Test:
+
+```text
+Customer Service
+Product Service
+Order Service
+```
+
+---
+
+# Final Project Features
+
+By the end of this learning journey, the project should include:
+
+```text
+SPRING BOOT
+✓ REST APIs
+✓ DTOs
+✓ Validation
+✓ JPA
+✓ Hibernate
+✓ Exception Handling
+
+MICROSERVICES
+✓ Customer Service
+✓ Product Service
+✓ Order Service
+
+SERVICE DISCOVERY
+✓ Eureka Server
+✓ Eureka Client
+✓ Service Registration
+✓ Service Discovery
+
+API GATEWAY
+✓ Routing
+✓ Predicates
+✓ Filters
+✓ Load Balancing
+
+SERVICE COMMUNICATION
+✓ RestClient
+✓ HTTP Communication
+✓ Service Discovery
+
+RESILIENCE
+✓ Timeout
+✓ Circuit Breaker
+✓ Fallback
+✓ Retry
+✓ Bulkhead
+
+PRODUCTION CONCEPTS
+✓ Actuator
+✓ Logging
+✓ Distributed Tracing
+✓ Profiles
+✓ Configuration Management
+✓ Security
+
+DEPLOYMENT
+✓ Docker
+✓ Docker Compose
+
+TESTING
+✓ JUnit
+✓ Mockito
+✓ Unit Tests
+✓ Integration Tests
+```
+
+---
+
+# Recommended Startup Order
+
+Start the services in this order:
+
+```text
+1. Service Discovery (Eureka)
+            |
+            v
+2. Customer Service
+            |
+            v
+3. Product Service
+            |
+            v
+4. Order Service
+            |
+            v
+5. API Gateway
+```
+
+---
+
+# Important URLs
+
+## Eureka Dashboard
+
+```text
+http://localhost:8761
+```
+
+## API Gateway
+
+```text
+http://localhost:8080
+```
+
+## Customer APIs
+
+```text
+http://localhost:8080/customers
+```
+
+## Product APIs
+
+```text
+http://localhost:8080/products
+```
+
+## Order APIs
+
+```text
+http://localhost:8080/orders
+```
+
+---
+
+# Learning Approach
+
+For every concept, follow this approach:
+
+```text
+1. Understand the concept
+          |
+          v
+2. Implement it
+          |
+          v
+3. Run the application
+          |
+          v
+4. Test using Postman
+          |
+          v
+5. Stop a service and test failure
+          |
+          v
+6. Debug the problem
+          |
+          v
+7. Understand the complete request flow
+```
+
+---
+
+# Current Learning Goal
+
+The main goal is to understand how a request travels through a real microservices architecture.
+
+Example:
+
+```text
+POST /orders
+
+Client
+   |
+   v
+API Gateway
+   |
+   v
+Eureka / Load Balancer
+   |
+   v
+Order Service
+   |
+   +--------------------+
+   |                    |
+   v                    v
+Customer Service    Product Service
+   |                    |
+   v                    v
+Validate Customer   Validate Product
+   |                    |
+   +---------+----------+
+             |
+             v
+      Calculate Amount
+             |
+             v
+        Create Order
+             |
+             v
+        Order Database
+             |
+             v
+         Response
+             |
+             v
+           Client
+```
+
+---
+
+# Final Goal
+
+By completing this project, I should be able to:
+
+```text
+✓ Build Spring Boot REST APIs
+
+✓ Design Microservices
+
+✓ Create independent Microservices
+
+✓ Register services with Eureka
+
+✓ Route requests through API Gateway
+
+✓ Implement Service-to-Service communication
+
+✓ Use RestClient
+
+✓ Handle failures using Circuit Breaker
+
+✓ Implement Retry and Fallback
+
+✓ Monitor Microservices
+
+✓ Secure Microservices
+
+✓ Dockerize applications
+
+✓ Run the complete Microservices architecture
+
+✓ Debug and understand end-to-end requests
+```
+
+---
+
+# Notes
+
+This project is intended for learning and experimentation.
+
+Each concept should be implemented gradually and tested independently before moving to the next concept.
+
+The focus is not only on writing code but also on understanding:
+
+```text
+HOW a request travels
+WHY each component exists
+WHAT problem each component solves
+HOW services communicate
+WHAT happens when a service fails
+```
+
+---
+
+## Learning Journey
+
+```text
+Spring Boot
+    |
+    v
+REST APIs
+    |
+    v
+Database
+    |
+    v
+Microservices
+    |
+    v
+Eureka
+    |
+    v
+API Gateway
+    |
+    v
+Service Communication
+    |
+    v
+Resilience
+    |
+    v
+Monitoring
+    |
+    v
+Security
+    |
+    v
+Docker
+    |
+    v
+Production Ready Microservices
+```
+
+**Happy Learning! 🚀**
